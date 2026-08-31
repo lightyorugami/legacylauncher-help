@@ -1777,7 +1777,11 @@ en:{
 }
 };
 
-let currentLang = new URLSearchParams(location.search).get("lang")==="en" ? "en" : "fr";
+const urlLang = new URLSearchParams(location.search).get("lang");
+const browserLang = (navigator.languages && navigator.languages[0]) || navigator.language || "";
+let currentLang = (urlLang === "fr" || urlLang === "en")
+  ? urlLang
+  : (/^fr(?:-|$)/i.test(browserLang) ? "fr" : "en");
 
 function render(){
   const s=DATA[currentLang];
@@ -1930,10 +1934,6 @@ function render(){
   bindCopy();
   observeSections();
 
-  const url=new URL(location.href);
-  if(currentLang==="fr") url.searchParams.delete("lang");
-  else url.searchParams.set("lang","en");
-  history.replaceState(null,"",url);
 }
 
 function bindCopy(){
@@ -2060,8 +2060,16 @@ function observeSections(){
   requestAnimationFrame(updateActiveToc);
 }
 
-document.getElementById("lang-fr").addEventListener("click",()=>{currentLang="fr";render()});
-document.getElementById("lang-en").addEventListener("click",()=>{currentLang="en";render()});
+function setLanguage(lang){
+  currentLang=lang;
+  const url=new URL(location.href);
+  url.searchParams.set("lang",lang);
+  history.replaceState(null,"",url);
+  render();
+}
+
+document.getElementById("lang-fr").addEventListener("click",()=>setLanguage("fr"));
+document.getElementById("lang-en").addEventListener("click",()=>setLanguage("en"));
 
 render();
 </script>
