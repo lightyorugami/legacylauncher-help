@@ -1598,7 +1598,7 @@ fr:{
   },
   helpIntro:"Le launcher fonctionne automatiquement en arrière-plan : dans la plupart des cas, il suffit simplement de lancer Deceit depuis Steam.",
   aboutTitle:"À propos",
-  aboutIntro:`Le <strong>Legacy Launcher</strong> permet de rejouer à la version legacy de Deceit, dont les <strong>serveurs officiels ont fermé</strong>. Lorsqu'un joueur lance Deceit, le launcher démarre en arrière-plan, configure automatiquement <strong>Radmin VPN</strong> afin de relier les joueurs sur un même réseau LAN virtuel, puis vérifie qu'un <strong>PartyServer</strong> est disponible pour permettre la connexion au jeu et la gestion des profils. Les <strong>parties LAN</strong> elles-mêmes sont ensuite gérées directement par <strong>Deceit entre les joueurs</strong>. Si aucun serveur n'est actif, l'un des joueurs actuellement en jeu l'héberge automatiquement. Si ce joueur quitte Deceit, l'hébergement est transféré à un autre joueur encore en jeu. Tout cela se fait <strong>sans configuration manuelle</strong> de la part des joueurs.`,
+  aboutIntro:`Le <strong>Legacy Launcher</strong> permet de rejouer à la version legacy de Deceit, dont les <strong>serveurs officiels ont fermé</strong>. Lorsqu'un joueur lance Deceit, le launcher démarre en arrière-plan, configure automatiquement <strong>Radmin VPN</strong> afin de relier les joueurs sur un même réseau LAN virtuel, puis vérifie qu'un <strong>PartyServer</strong> est disponible pour assurer le fonctionnement des parties. Si aucun serveur n'est actif, l'un des joueurs actuellement en jeu l'héberge automatiquement. Si ce joueur quitte Deceit, l'hébergement est transféré à un autre joueur encore en jeu. Tout cela se fait sans configuration manuelle de la part des joueurs.`,
   launchTitle:"Lancer Deceit",
   launchSteps:[
     `Lancez <strong>Deceit depuis Steam</strong> normalement.`,
@@ -1696,7 +1696,7 @@ en:{
   },
   helpIntro:"The launcher works automatically in the background: in most cases, you simply need to launch Deceit from Steam.",
   aboutTitle:"About",
-  aboutIntro:`The <strong>Legacy Launcher</strong> lets you play the legacy version of Deceit, whose <strong>official servers have shut down</strong>. When a player launches Deceit, the launcher starts in the background, automatically configures <strong>Radmin VPN</strong> to connect players through the same virtual LAN, then checks that a <strong>PartyServer</strong> is available to handle game login and profile management. The <strong>LAN matches</strong> themselves are then handled directly by <strong>Deceit between the players</strong>. If no server is active, one of the players currently in-game hosts it automatically. If that player leaves Deceit, hosting is transferred to another player who is still in-game. All of this happens <strong>without any manual configuration</strong> from players.`,
+  aboutIntro:`The <strong>Legacy Launcher</strong> lets you play the legacy version of Deceit, whose <strong>official servers have shut down</strong>. When a player launches Deceit, the launcher starts in the background, automatically configures <strong>Radmin VPN</strong> to connect players through the same virtual LAN, then checks that a <strong>PartyServer</strong> is available to run matches. If no server is active, one of the players currently in-game hosts it automatically. If that player leaves Deceit, hosting is transferred to another player who is still in-game. No manual configuration is required from players.`,
   launchTitle:"Launch Deceit",
   launchSteps:[
     `Launch <strong>Deceit from Steam</strong> normally.`,
@@ -1943,24 +1943,19 @@ function bindCopy(){
     const s=DATA[currentLang];
     try{
       await navigator.clipboard.writeText("legacyhelper");
+
+      const label=document.getElementById("copy-label");
+      if(label){
+        label.textContent=s.copied;
+        label.classList.add("show");
+        setTimeout(()=>{
+          label.textContent="";
+          label.classList.remove("show");
+        },1100);
+      }
     }catch(_){
-      const input=document.createElement("textarea");
-      input.value="legacyhelper";
-      input.style.position="fixed";
-      input.style.opacity="0";
-      document.body.appendChild(input);
-      input.select();
-      document.execCommand("copy");
-      input.remove();
-    }
-    const label=document.getElementById("copy-label");
-    if(label){
-      label.textContent=s.copied;
-      label.classList.add("show");
-      setTimeout(()=>{
-        label.textContent="";
-        label.classList.remove("show");
-      },1100);
+      // La copie peut être bloquée par le navigateur ou une extension.
+      // Aucun fallback invisible n'est utilisé.
     }
   });
 }
