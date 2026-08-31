@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="dark">
-<link rel="icon" type="image/png" href="https://cdn.discordapp.com/attachments/640663334298845184/1543938655444279406/leg-icon.png?ex=6a96b06c&is=6a955eec&hm=45e279b9ec8579c97dcc70866805566ae52a8f8f57518751f4127719bda2c3e6&animated=true">
-<title>Aide — Legacy Launcher</title>
+<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/lightyorugami/legacylauncher-help/refs/heads/main/icon.png">
+<title>Legacy Launcher | Aide</title>
 <style>
 :root{
   --bg:#0e0c0b;
@@ -800,7 +800,7 @@ button{font:inherit}
   letter-spacing:-.018em;
 }
 .content-block .prose{
-  max-width:820px;
+  max-width:900px;
 }
 .content-block .prose p,
 .content-block > p{
@@ -1359,6 +1359,137 @@ button{font:inherit}
 
 /* Pas de cadre, fond ou pastille autour des icônes : elles restent éditoriales. */
 
+
+/* =====================================================================
+   V3 — aide adaptée au launcher automatique
+   ===================================================================== */
+
+/* À propos : composants techniques présentés simplement dans le flux. */
+.component-list{
+  margin-top:22px;
+  border-top:1px solid var(--line);
+}
+.component-row{
+  display:grid;
+  grid-template-columns:150px minmax(0,1fr);
+  gap:28px;
+  padding:17px 0;
+  border-bottom:1px solid var(--line);
+}
+.component-name{
+  color:var(--accent-2);
+  font-size:12.5px;
+  font-weight:800;
+}
+.component-row p{
+  margin:0;
+  color:var(--text-soft);
+  font-size:13px;
+  line-height:1.67;
+}
+
+/* Parcours de lancement : une seule colonne, puisque l'utilisateur ne choisit plus Host/Join. */
+.single-step-flow{
+  max-width:860px;
+}
+.single-step-flow .steps{
+  padding:0;
+}
+.single-step-flow .steps li{
+  padding:11px 0;
+}
+.single-step-flow .steps li::before{
+  width:23px;
+  height:23px;
+  border-radius:50%;
+  background:transparent;
+  border:1px solid var(--line-strong);
+  color:var(--accent);
+}
+
+/* Fonctionnement automatique : trois lignes explicatives, pas de cartes. */
+.automatic-list{
+  max-width:900px;
+}
+.automatic-row{
+  display:grid;
+  grid-template-columns:170px minmax(0,1fr);
+  gap:28px;
+  padding:16px 0;
+  border-top:1px solid var(--line);
+}
+.automatic-row:first-child{
+  border-top:0;
+  padding-top:2px;
+}
+.automatic-row h4{
+  margin:0;
+  color:var(--accent-2);
+  font-size:12.5px;
+  font-weight:800;
+}
+.automatic-row p{
+  margin:0;
+  color:var(--text-soft);
+  font-size:13px;
+  line-height:1.67;
+}
+
+/* Ancres du nouveau sommaire. */
+#launch-game-help,
+#automatic,
+#lan-limits{
+  scroll-margin-top:30px;
+}
+
+@media (max-width:720px){
+  .component-row,
+  .automatic-row{
+    grid-template-columns:1fr;
+    gap:6px;
+  }
+}
+
+
+/* V3.2 — chemin Jouer > LAN inline dans l'étape de lancement */
+.inline-path{
+  display:inline;
+}
+.inline-path .path{
+  display:inline-flex;
+  flex-wrap:nowrap;
+  margin:0 0 0 6px;
+  vertical-align:middle;
+}
+
+
+/* V3.5 — titre aligné à gauche, avec Legacy Launcher en jaune */
+.hero{
+  text-align:left;
+}
+.hero h1{
+  font-family:var(--font);
+  max-width:none;
+  margin:12px 0 0;
+  font-size:clamp(36px,5.15vw,64px);
+  font-weight:760;
+  line-height:1.08;
+  letter-spacing:-.02em;
+  white-space:nowrap;
+}
+.hero h1 span{
+  color:var(--accent-2);
+}
+.hero-lead{
+  display:none;
+}
+@media (max-width:720px){
+  .hero h1{
+    font-size:clamp(30px,7.7vw,48px);
+    white-space:normal;
+  }
+}
+
 </style>
 </head>
 <body id="top">
@@ -1385,7 +1516,9 @@ button{font:inherit}
           <div class="toc-group">
             <a class="toc-main" href="#help" data-target="help" id="toc-help">Aide</a>
             <div class="toc-sub">
-              <a href="#join-host" data-target="join-host" id="toc-join">Rejoindre / Héberger</a>
+              <a href="#launch-game-help" data-target="launch-game-help" id="toc-launch">Lancer Deceit</a>
+              <a href="#automatic" data-target="automatic" id="toc-automatic">Fonctionnement automatique</a>
+              <a href="#lan-limits" data-target="lan-limits" id="toc-limits">Limitations du mode LAN</a>
               <a href="#issues" data-target="issues" id="toc-issues">Problèmes connus</a>
               <a href="#contact" data-target="contact" id="toc-contact">Contact</a>
             </div>
@@ -1447,31 +1580,50 @@ const COPY_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
 
 const DATA = {
 fr:{
-  title:"Aide — Legacy Launcher",
-  brandSub:"Documentation & aide",
-  heroEyebrow:"Documentation",
+  title:"Legacy Launcher | Aide",
   heroTitle:`Aide du <span>Legacy Launcher</span>`,
-  heroLead:"Retrouvez ici les informations essentielles pour rejoindre ou héberger une partie, comprendre les limitations du mode LAN et utiliser la Console DLL.",
-  heroHelp:"Accéder à l'aide",
-  heroDll:"Voir la Console DLL",
+  heroLead:"",
   tocTitle:"Sur cette page",
-  labels:{help:"Aide",join:"Rejoindre / Héberger",issues:"Problèmes connus",contact:"Contact",dll:"Console DLL",main:"Main",vars:"Variables",patches:"Patches"},
-  helpIntro:"Tout ce qu'il faut pour lancer une partie Legacy dans de bonnes conditions.",
+  labels:{
+    help:"Aide",
+    launch:"Lancer Deceit",
+    automatic:"Fonctionnement automatique",
+    limits:"Limitations du mode LAN",
+    issues:"Problèmes connus",
+    contact:"Contact",
+    dll:"Console DLL",
+    main:"Main",
+    vars:"Variables",
+    patches:"Patches"
+  },
+  helpIntro:"Le launcher fonctionne automatiquement en arrière-plan : dans la plupart des cas, il suffit simplement de lancer Deceit depuis Steam.",
   aboutTitle:"À propos",
-  about:`Le <strong>Legacy Launcher</strong> permet de rejouer à la version legacy de Deceit, dont les <strong>serveurs officiels ont fermé</strong>, en permettant à un joueur d'<strong>héberger un serveur en pair-à-pair</strong> et aux autres de le rejoindre via le <strong>mode LAN</strong> du jeu, à l'aide de <strong>Radmin VPN</strong>.`,
-  joinTitle:"Rejoindre",
-  hostTitle:"Héberger",
-  joinSteps:[
-    `Choisissez le mode <strong>Rejoindre</strong> dans le launcher.`,
-    `Saisissez l'IP fournie par l'hôte.`,
-    `Lancez Deceit : le launcher configure automatiquement <strong>Radmin VPN</strong> au moment du lancement.`,
-    `Une fois en jeu, rejoignez le salon de l'hôte : ${pathHtml(["Jouer","LAN","Rejoindre un salon"])}`
+  aboutIntro:`Le <strong>Legacy Launcher</strong> permet de rejouer à la version legacy de Deceit, dont les <strong>serveurs officiels ont fermé</strong>. Lorsqu'un joueur lance Deceit, le launcher démarre en arrière-plan, configure automatiquement <strong>Radmin VPN</strong> afin de relier les joueurs sur un même réseau LAN virtuel, puis vérifie qu'un <strong>PartyServer</strong> est disponible pour assurer le fonctionnement des parties. Si aucun serveur n'est actif, l'un des joueurs actuellement en jeu l'héberge automatiquement. Si ce joueur quitte Deceit, l'hébergement est transféré à un autre joueur encore en jeu. Tout cela se fait sans configuration manuelle de la part des joueurs.`,
+  launchTitle:"Lancer Deceit",
+  launchSteps:[
+    `Lancez <strong>Deceit depuis Steam</strong> normalement.`,
+    `Le <strong>Legacy Launcher</strong> détecte le lancement du jeu et effectue automatiquement les vérifications nécessaires en arrière-plan.`,
+    `Le launcher vérifie la disponibilité de <strong>PartyServer</strong> et du réseau <strong>Radmin VPN</strong>, puis prépare la connexion.`,
+    `Une fois en jeu, utilisez le menu LAN pour créer ou rejoindre un salon : <span class="inline-path">${pathHtml(["Jouer","LAN"])}</span>`
   ],
-  hostSteps:[
-    `Choisissez le mode <strong>Héberger</strong> dans le launcher.`,
-    `Lancez Deceit : le launcher démarre et configure automatiquement <strong>PartyServer</strong> et <strong>Radmin VPN</strong>.`,
-    `En jeu, créez le salon : ${pathHtml(["Jouer","LAN","Créer un salon"])}`,
-    `À 6 joueurs, utilisez <span class="chip">Démarrer</span> ou <span class="chip">Start</span> si la <strong>Console DLL</strong> est activée. À moins de 6, passez obligatoirement par la console.`
+  automaticTitle:"Fonctionnement automatique",
+  automaticItems:[
+    {
+      title:"Au lancement",
+      text:`Quand Deceit est lancé, le Legacy Launcher s'active en arrière-plan, rejoint automatiquement le réseau Radmin utilisé pour le mode LAN et recherche le PartyServer actuellement disponible.`
+    },
+    {
+      title:"Hébergement du serveur",
+      text:`Parmi les joueurs qui ont Deceit ouvert, l'un d'eux héberge PartyServer automatiquement lorsqu'aucun serveur n'est déjà disponible. Aucune action particulière n'est demandée au joueur qui héberge.`
+    },
+    {
+      title:"Relais automatique",
+      text:`Si le joueur qui héberge PartyServer quitte Deceit, l'hébergement est repris automatiquement par un autre joueur encore en jeu. Le serveur n'est donc jamais lancé sur l'ordinateur d'un utilisateur qui ne joue pas à Deceit.`
+    },
+    {
+      title:"Réseau",
+      text:`Radmin VPN est géré en arrière-plan par le launcher. En utilisation normale, il n'est pas nécessaire d'ouvrir Radmin VPN, de rejoindre un réseau manuellement ni de saisir ou partager une adresse IP.`
+    }
   ],
   limitsTitle:"Limitations du mode LAN",
   limitsText:"Le mode LAN de Deceit présente certaines limitations techniques. Il ne permet notamment <strong>pas</strong> de <strong>gagner d'XP</strong>, et certains <strong>problèmes propres à ce mode</strong> peuvent survenir. Ceux-ci sont détaillés dans la section <strong>Problèmes connus</strong>.",
@@ -1487,16 +1639,15 @@ fr:{
     {title:"Exécution d'un coéquipier Infecté",text:"Avec moins de 6 joueurs ou si le nombre d'Infectés a été modifié, il peut arriver qu'un joueur exécute accidentellement un coéquipier Infecté ou qu'il ne puisse pas exécuter un Innocent."},
     {title:"Porte de sortie inaccessible",text:"La porte de sortie peut parfois ne pas être franchissable visuellement, mais l'évasion est tout de même prise en compte et la partie peut être gagnée normalement."}
   ],
-  contactLead:"En cas de soucis avec le launcher ou le mode LAN, vous pouvez contacter le propriétaire du projet via Discord.",
+  contactLead:"En cas de souci avec le launcher, PartyServer, Radmin VPN ou le mode LAN, vous pouvez contacter le propriétaire du projet via Discord.",
   copy:"Copier",
   copied:"Copié !",
-  dllIntroTitle:"",
-  dllIntro:"La <strong>Console DLL</strong> permet de configurer et personnaliser les parties LAN depuis le jeu de l'hôte.",
+  dllIntro:"La <strong>Console DLL</strong> permet de configurer et personnaliser les parties LAN. Elle peut être affichée depuis l'icône du Legacy Launcher dans la zone de notification lorsque Deceit est lancé.",
   dllWarningTitle:"À utiliser avec précaution",
   dllWarning:"Pour des parties classiques à 6 joueurs, il est recommandé de laisser la Console DLL désactivée. Certaines options peuvent perturber la logique interne du jeu et provoquer des comportements inattendus.",
   generalTitle:"Informations générales",
   general:[
-    {title:"Qu'est-ce que c'est ?",text:`La <strong>console DLL</strong> est injectée directement dans le jeu de <strong>l'hôte uniquement lorsque l'option correspondante est activée</strong>. Elle permet de configurer et de personnaliser les parties LAN au-delà du fonctionnement standard du jeu : nombre de joueurs, carte, votes, éclairage, durée d'un round, nombre d'Infectés, etc.`},
+    {title:"Qu'est-ce que c'est ?",text:`La <strong>console DLL</strong> est un outil intégré à Deceit qui permet de configurer et de personnaliser les parties LAN au-delà du fonctionnement standard du jeu : nombre de joueurs, carte, votes, éclairage, durée d'un round, nombre d'Infectés, etc. Elle peut être affichée ou masquée depuis l'icône du Legacy Launcher dans la zone de notification lorsque le jeu est lancé.`},
     {title:"Replier et déplacer la console",text:`La <strong>petite flèche</strong> située en haut à gauche permet de replier ou de déployer la console. Pour la déplacer, maintenez la barre <span class="chip">Game control</span> et faites-la glisser à l'endroit souhaité.`},
     {title:"Problèmes connus",text:`Lorsque <strong>l'hôte est Infecté</strong>, son coéquipier Infecté <strong>ne le voit</strong> ni en rouge dans la liste des joueurs, ni à travers les murs. La <strong>porte de sortie</strong> peut également ne pas être franchissable visuellement, mais l'évasion est tout de même prise en compte.`}
   ],
@@ -1527,31 +1678,50 @@ fr:{
   top:"Retour en haut ↑"
 },
 en:{
-  title:"Help — Legacy Launcher",
-  brandSub:"Documentation & help",
-  heroEyebrow:"Documentation",
+  title:"Legacy Launcher | Help",
   heroTitle:`Help for <span>Legacy Launcher</span>`,
-  heroLead:"Find the essential information for joining or hosting a match, understanding LAN mode limitations and using the DLL Console.",
-  heroHelp:"Open help",
-  heroDll:"View DLL Console",
+  heroLead:"",
   tocTitle:"On this page",
-  labels:{help:"Help",join:"Join / Host",issues:"Known issues",contact:"Contact",dll:"DLL Console",main:"Main",vars:"Variables",patches:"Patches"},
-  helpIntro:"Everything you need to launch a Legacy match in good conditions.",
+  labels:{
+    help:"Help",
+    launch:"Launch Deceit",
+    automatic:"Automatic operation",
+    limits:"LAN mode limitations",
+    issues:"Known issues",
+    contact:"Contact",
+    dll:"DLL Console",
+    main:"Main",
+    vars:"Variables",
+    patches:"Patches"
+  },
+  helpIntro:"The launcher works automatically in the background: in most cases, you simply need to launch Deceit from Steam.",
   aboutTitle:"About",
-  about:`The <strong>Legacy Launcher</strong> lets you play the legacy version of Deceit, whose <strong>official servers have shut down</strong>, by allowing one player to <strong>host a peer-to-peer server</strong> and others to join via the game's <strong>LAN mode</strong>, using <strong>Radmin VPN</strong>.`,
-  joinTitle:"Join",
-  hostTitle:"Host",
-  joinSteps:[
-    `Choose <strong>Join</strong> mode in the launcher.`,
-    `Enter the IP provided by the host.`,
-    `Launch Deceit: the launcher configures <strong>Radmin VPN</strong> automatically when you launch.`,
-    `Once in-game, join the host's lobby: ${pathHtml(["Play","LAN","Join a lobby"])}`
+  aboutIntro:`The <strong>Legacy Launcher</strong> lets you play the legacy version of Deceit, whose <strong>official servers have shut down</strong>. When a player launches Deceit, the launcher starts in the background, automatically configures <strong>Radmin VPN</strong> to connect players through the same virtual LAN, then checks that a <strong>PartyServer</strong> is available to run matches. If no server is active, one of the players currently in-game hosts it automatically. If that player leaves Deceit, hosting is transferred to another player who is still in-game. No manual configuration is required from players.`,
+  launchTitle:"Launch Deceit",
+  launchSteps:[
+    `Launch <strong>Deceit from Steam</strong> normally.`,
+    `The <strong>Legacy Launcher</strong> detects the game launch and automatically performs the required checks in the background.`,
+    `The launcher checks the availability of <strong>PartyServer</strong> and the <strong>Radmin VPN</strong> network, then prepares the connection.`,
+    `Once in-game, use the LAN menu to create or join a lobby: <span class="inline-path">${pathHtml(["Play","LAN"])}</span>`
   ],
-  hostSteps:[
-    `Choose <strong>Host</strong> mode in the launcher.`,
-    `Launch Deceit: the launcher starts and configures <strong>PartyServer</strong> and <strong>Radmin VPN</strong> automatically.`,
-    `In-game, create the lobby: ${pathHtml(["Play","LAN","Create a lobby"])}`,
-    `With 6 players, use <span class="chip">Start</span> in-game, or <span class="chip">Start</span> if the <strong>DLL Console</strong> is enabled. With fewer than 6, you must use the console.`
+  automaticTitle:"Automatic operation",
+  automaticItems:[
+    {
+      title:"On launch",
+      text:`When Deceit is launched, the Legacy Launcher becomes active in the background, automatically joins the Radmin network used for LAN mode and looks for the currently available PartyServer.`
+    },
+    {
+      title:"Server hosting",
+      text:`Among the players who currently have Deceit open, one of them automatically hosts PartyServer when no server is already available. The hosting player does not need to do anything.`
+    },
+    {
+      title:"Automatic handover",
+      text:`If the player hosting PartyServer closes Deceit, hosting is automatically taken over by another player who is still in-game. The server is therefore never started on the computer of someone who is not playing Deceit.`
+    },
+    {
+      title:"Network",
+      text:`Radmin VPN is managed in the background by the launcher. During normal use, there is no need to open Radmin VPN, manually join a network, or enter or share an IP address.`
+    }
   ],
   limitsTitle:"LAN mode limitations",
   limitsText:"Deceit's LAN mode has some technical limitations. In particular, <strong>XP cannot be earned</strong>, and some <strong>issues specific to this mode</strong> may occur. These are detailed in the <strong>Known issues</strong> section.",
@@ -1567,16 +1737,15 @@ en:{
     {title:"Executing an Infected teammate",text:"With fewer than 6 players or if the number of Infected has been changed, a player may accidentally execute an Infected teammate or be unable to execute an Innocent."},
     {title:"Inaccessible exit door",text:"The exit door may sometimes appear impossible to pass through, but the escape is still registered and the match can be won normally."}
   ],
-  contactLead:"If you have issues with the launcher or LAN mode, you can contact the project owner on Discord.",
+  contactLead:"If you have an issue with the launcher, PartyServer, Radmin VPN or LAN mode, you can contact the project owner on Discord.",
   copy:"Copy",
   copied:"Copied!",
-  dllIntroTitle:"",
-  dllIntro:"The <strong>DLL Console</strong> lets you configure and customize LAN matches from the host's game.",
+  dllIntro:"The <strong>DLL Console</strong> lets you configure and customize LAN matches. It can be shown from the Legacy Launcher icon in the system tray while Deceit is running.",
   dllWarningTitle:"Use with care",
   dllWarning:"For standard 6-player matches, it is recommended to keep the DLL Console disabled. Some options can interfere with the game's internal logic and cause unexpected behavior.",
   generalTitle:"General information",
   general:[
-    {title:"What is it?",text:`The <strong>DLL Console</strong> is injected directly into the <strong>host's game only when the corresponding option is enabled</strong>. It lets the host configure and customize LAN matches beyond the game's standard behavior: player count, map, votes, lighting, round time, number of Infected players, and more.`},
+    {title:"What is it?",text:`The <strong>DLL Console</strong> is a tool integrated into Deceit that lets you configure and customize LAN matches beyond the game's standard behavior: player count, map, votes, lighting, round time, number of Infected players, and more. It can be shown or hidden from the Legacy Launcher icon in the system tray while the game is running.`},
     {title:"Collapse and move the console",text:`Use the <strong>small arrow</strong> in the top-left corner to collapse or expand the console. To move it, hold the <span class="chip">Game control</span> header and drag it anywhere on the screen.`},
     {title:"Known issues",text:`When the <strong>host is Infected</strong>, their Infected teammate <strong>cannot see them</strong> highlighted in red in the player list or through walls. The <strong>exit door</strong> may also appear impossible to pass through, but the escape is still registered.`}
   ],
@@ -1625,7 +1794,9 @@ function render(){
   set("hero-lead",s.heroLead);
   set("toc-title",s.tocTitle);
   set("toc-help",s.labels.help);
-  set("toc-join",s.labels.join);
+  set("toc-launch",s.labels.launch);
+  set("toc-automatic",s.labels.automatic);
+  set("toc-limits",s.labels.limits);
   set("toc-issues",s.labels.issues);
   set("toc-contact",s.labels.contact);
   set("toc-dll",s.labels.dll);
@@ -1649,24 +1820,31 @@ function render(){
 
       <section class="content-block">
         <h3 class="section-title-with-icon"><span class="section-title-icon" aria-hidden="true">${ICONS.info}</span><span>${s.aboutTitle}</span></h3>
-        <div class="prose"><p>${s.about}</p></div>
-      </section>
-
-      <section class="content-block" id="join-host">
-        <h3 class="content-title section-title-with-icon"><span class="section-title-icon" aria-hidden="true">${ICONS.play}</span><span>${s.labels.join}</span></h3>
-        <div class="two-col editorial-columns">
-          <div class="step-column">
-            <h4>${s.joinTitle}</h4>
-            ${stepsHtml(s.joinSteps)}
-          </div>
-          <div class="step-column">
-            <h4>${s.hostTitle}</h4>
-            ${stepsHtml(s.hostSteps)}
-          </div>
+        <div class="prose">
+          <p>${s.aboutIntro}</p>
         </div>
       </section>
 
-      <section class="content-block">
+      <section class="content-block" id="launch-game-help">
+        <h3 class="content-title section-title-with-icon"><span class="section-title-icon" aria-hidden="true">${ICONS.play}</span><span>${s.launchTitle}</span></h3>
+        <div class="single-step-flow">
+          ${stepsHtml(s.launchSteps)}
+        </div>
+      </section>
+
+      <section class="content-block" id="automatic">
+        <h3 class="content-title section-title-with-icon"><span class="section-title-icon" aria-hidden="true">${ICONS.sliders}</span><span>${s.automaticTitle}</span></h3>
+        <div class="automatic-list">
+          ${s.automaticItems.map(item=>`
+            <div class="automatic-row">
+              <h4>${item.title}</h4>
+              <p>${item.text}</p>
+            </div>
+          `).join("")}
+        </div>
+      </section>
+
+      <section class="content-block" id="lan-limits">
         <h3 class="section-title-with-icon"><span class="section-title-icon" aria-hidden="true">${ICONS.flag}</span><span>${s.limitsTitle}</span></h3>
         <p class="plain-copy">${s.limitsText}</p>
       </section>
